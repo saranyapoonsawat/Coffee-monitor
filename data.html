@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ที่มาของตัวเลข · Coffee Cafe Monitor (ต้นแบบ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<script src="app.js" defer></script>
+</head>
+<body class="k-doc" data-page="data">
+<a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a>
+<main id="main" class="wrap prose">
+<h1>ที่มาของตัวเลข</h1>
+<p class="sub">ทุกตัวเลขบน Dashboard คำนวณใน build.py จาก <b>data/IS757_ตัวเลขรายชั่วโมงสมมติ.csv</b> (1,876 แถว · หนึ่งแถว = ชั่วโมง × แพลตฟอร์ม × สาขา × ความรู้สึก × แคมเปญ · คอลัมน์ "จำนวนการกล่าวถึง" คือค่าที่นำมารวม)</p>
+<section class="card"><h2>ค่าที่ตรวจก่อนวาด (ช่วง 19–25 ต.ค. 69)</h2>
+<table style="margin-top:10px"><thead><tr><th>รายการ</th><th>ค่าคำนวณ</th><th>ค่าที่กำหนด</th><th>ผล</th></tr></thead><tbody>
+<tr><td>ทั้งหมด</td><td class="num">2,122</td><td class="num">2,122</td><td class="pass">ตรง</td></tr>
+<tr><td>เชิงลบ</td><td class="num">909</td><td class="num">909</td><td class="pass">ตรง</td></tr>
+<tr><td>ชั่วโมงสูงสุด</td><td>ศ. 23 ต.ค. 69 · 23:00 น. = 174 ครั้ง</td><td>ศ. 23 ต.ค. 23:00 น. = 174</td><td class="pass">ตรง</td></tr>
+</tbody></table>
+<p class="foot-note" style="margin-top:8px">build.py หยุดทำงาน (assert) ถ้าค่าใดไม่ตรง</p></section>
+<section class="card"><h2>กติกาการนับ</h2><ul>
+<li>Dashboard ใช้ช่วง 19–25 ต.ค. 69 เท่านั้น · ยอดวันที่ 26 ต.ค. (213 ครั้ง ถึงชั่วโมง 23:00 น.) ไม่นำมารวม เพราะยังไม่ครบวัน · ข้อมูลถึง จ. 26 ต.ค. 69 · 14:00 น.</li>
+<li>สัดส่วนเชิงลบ = 909 ÷ 2,122 = 42.8% · แยกความรู้สึก: ลบ 909 · เป็นกลาง 484 · ผสม 157 · บวก 572</li>
+<li>นอกเวลาทำการ = แถวที่คอลัมน์ "นอกเวลาทำการ" เป็น "ใช่" (20:00–07:00 น.) รวม 680 ครั้ง</li>
+<li>ชั่วโมงที่สูงรองลงมา: ส. 24 ต.ค. 69 · 00:00 น. = 139 ครั้ง</li>
+<li>"ปกติชั่วโมงนี้" = ค่าเฉลี่ยชั่วโมงเดียวกันของ จ.–พฤ. (19–22 ต.ค.): 23:00 น. เฉลี่ย 2.2 · 22:00 น. เฉลี่ย 3.5</li>
+<li>แคมเปญ โปร 1 แถม 1 สมาชิก: นับแถวที่คอลัมน์แคมเปญตรงชื่อ · 20–25 ต.ค. รวม 350 (ลบ 89) · วันที่ 26 ต.ค. ไม่ครบวัน (76 ครั้ง) จึงไม่แสดงในกราฟ แม้ชุดตัวกรองที่บันทึกไว้ชื่อ 20–26 ต.ค. 69</li>
+<li>หน้า m3 แท่ง 22:00 น. เป็นยอดทั้งชั่วโมงจากไฟล์ (CSV เป็นรายชั่วโมง จึงแยกยอดถึง 22:42 น. ไม่ได้)</li>
+<li>ข้อความ ความมั่นใจ คำหลักฐาน และยอดมีส่วนร่วมรายโพสต์มาจาก xlsx ไม่ได้มาจาก CSV</li></ul></section>
+<section class="card"><h2>รายวัน</h2><table style="margin-top:10px"><thead><tr><th>วัน</th><th>ทั้งหมด</th><th>เชิงลบ</th><th>แคมเปญ</th></tr></thead><tbody><tr><td>จ. 19 ต.ค. 69</td><td class="num">179</td><td class="num">60</td><td class="num">—</td></tr><tr><td>อ. 20 ต.ค. 69</td><td class="num">207</td><td class="num">46</td><td class="num">51</td></tr><tr><td>พ. 21 ต.ค. 69</td><td class="num">218</td><td class="num">56</td><td class="num">53</td></tr><tr><td>พฤ. 22 ต.ค. 69</td><td class="num">209</td><td class="num">59</td><td class="num">60</td></tr><tr><td>ศ. 23 ต.ค. 69</td><td class="num">453</td><td class="num">239</td><td class="num">65</td></tr><tr><td>ส. 24 ต.ค. 69</td><td class="num">596</td><td class="num">363</td><td class="num">60</td></tr><tr><td>อา. 25 ต.ค. 69</td><td class="num">260</td><td class="num">86</td><td class="num">61</td></tr></tbody></table></section>
+<section class="card"><h2>แยกแพลตฟอร์ม</h2><table style="margin-top:10px"><thead><tr><th>แพลตฟอร์ม</th><th>ลบ</th><th>เป็นกลาง</th><th>ผสม</th><th>บวก</th><th>รวม</th></tr></thead><tbody><tr><td>Facebook</td><td class="num">235</td><td class="num">140</td><td class="num">38</td><td class="num">152</td><td class="num"><b>565</b></td></tr><tr><td>TikTok</td><td class="num">257</td><td class="num">79</td><td class="num">36</td><td class="num">105</td><td class="num"><b>477</b></td></tr><tr><td>X</td><td class="num">178</td><td class="num">78</td><td class="num">29</td><td class="num">69</td><td class="num"><b>354</b></td></tr><tr><td>Google Maps</td><td class="num">94</td><td class="num">74</td><td class="num">26</td><td class="num">93</td><td class="num"><b>287</b></td></tr><tr><td>Grab</td><td class="num">34</td><td class="num">40</td><td class="num">8</td><td class="num">43</td><td class="num"><b>125</b></td></tr><tr><td>Pantip</td><td class="num">50</td><td class="num">31</td><td class="num">6</td><td class="num">37</td><td class="num"><b>124</b></td></tr><tr><td>LINE MAN</td><td class="num">30</td><td class="num">19</td><td class="num">6</td><td class="num">42</td><td class="num"><b>97</b></td></tr><tr><td>YouTube</td><td class="num">31</td><td class="num">23</td><td class="num">8</td><td class="num">31</td><td class="num"><b>93</b></td></tr></tbody></table></section>
+<section class="card"><h2>เชิงลบแยกสาขา</h2><table style="margin-top:10px"><thead><tr><th>สาขา</th><th>เชิงลบ</th><th>ทั้งหมด</th><th>สัดส่วน</th></tr></thead><tbody><tr><td>สาขารังสิต</td><td class="num">356</td><td class="num">574</td><td class="num">62.0%</td></tr><tr><td>ไม่ระบุสาขา</td><td class="num">310</td><td class="num">662</td><td class="num">46.8%</td></tr><tr><td>สาขาลาดพร้าว</td><td class="num">77</td><td class="num">261</td><td class="num">29.5%</td></tr><tr><td>สาขาบางนา</td><td class="num">62</td><td class="num">199</td><td class="num">31.2%</td></tr><tr><td>สาขาอารีย์</td><td class="num">54</td><td class="num">240</td><td class="num">22.5%</td></tr><tr><td>สาขาพระราม 2</td><td class="num">50</td><td class="num">186</td><td class="num">26.9%</td></tr></tbody></table></section>
+</main>
+</body>
+</html>

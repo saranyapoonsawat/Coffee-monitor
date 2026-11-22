@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C09 · รายละเอียดโพสต์ · Coffee Cafe Monitor (ต้นแบบ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<script src="app.js" defer></script>
+</head>
+<body class="k-web" data-page="w3">
+<a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a>
+
+<div class="web">
+  <aside class="side">
+    <div class="brand"><span class="logo"><svg class="ic" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span><b>Coffee Cafe Monitor</b><small>Social Listening & Insights</small></span></div>
+    <nav aria-label="เมนูหลัก"><ul><li><a class="nav-item" href="w1.html"><svg class="ic" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Dashboard</span></a></li><li><a class="nav-item" href="w2.html" aria-current="page"><svg class="ic" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Social Feed</span></a></li><li><a class="nav-item" href="w-cases.html"><svg class="ic" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Alerts & Cases</span><span class="count" aria-label="เคสระดับวิกฤตที่ยังไม่มีผู้รับทราบ">K10</span></a></li><li class="sep" role="presentation"></li><li><span class="nav-item static" aria-disabled="true"><svg class="ic" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span>ตั้งค่า<small>ภาพนิ่ง</small></span></span></li><li class="nav-note">เมนูรอง แสดงตามสิทธิ์</li></ul></nav>
+  </aside>
+  <div class="web-main">
+    <header class="topbar">
+      <nav aria-label="เส้นทางบอกตำแหน่ง"><ol class="crumbs"><li><a href="w1.html">Dashboard</a></li><li><a href="w2.html">Social Feed</a></li><li aria-current="page">C09</li></ol></nav>
+      <div class="top-right">
+        <span class="asof"><svg class="ic" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>ข้อมูลถึง จ. 26 ต.ค. 69 · 14:00 น.</span>
+        <form class="search" role="search" onsubmit="return false">
+          <label for="q" class="sr-only">ค้นหาโพสต์หรือเคส</label>
+          <svg class="ic" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input id="q" type="search" placeholder="ค้นหาโพสต์หรือเคส เช่น C09, K10">
+        </form>
+        <button class="icon-btn" type="button" aria-label="การแจ้งเตือน (ภาพนิ่ง)"><svg class="ic" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+        <span class="me"><span class="avatar"><svg class="ic" role="img" aria-label="ผู้ใช้" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><b>ทีม Customer Support</b><small>บทบาท: CS · เวลางาน</small></span></span>
+      </div>
+    </header>
+    <main id="main" class="content">
+<div class="page-head"><h1>C09 · รายละเอียดโพสต์</h1></div>
+<!-- F37 ส่วนตั้งค่าของโพสต์ มีหัวข้อและหน้าตาต่างจากแถบตัวกรอง -->
+<section class="card setup" aria-labelledby="setup-h">
+  <h2 id="setup-h"><svg class="ic" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg> ตั้งค่าโพสต์นี้</h2>
+  <label class="opt">สถานะ<select id="set-status"><option selected>ใหม่</option><option>อยู่ระหว่างดำเนินการ</option><option>ตรวจสอบแล้ว</option></select></label>
+  <label class="opt">ผู้รับผิดชอบ<select id="set-owner"><option>แอดมินเพจ</option><option>CS ส่วนกลาง</option></select></label>
+  <label class="opt">เคส<select id="set-case"><option>ไม่ผูกเคส</option></select></label>
+  <span class="muted" id="setup-msg" role="status">เปลี่ยนแล้วบันทึกทันที</span>
+</section>
+<div class="detail">
+  <div class="detail-col">
+    <section class="card" aria-labelledby="p-h">
+      <h2 id="p-h" class="sr-only">ข้อความต้นทาง</h2>
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+        <p class="sub"><svg class="ic" role="img" aria-label="ชื่อผู้โพสต์ถูกปกปิด" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.1 10.1 0 0 1 12 20c-7 0-10-8-10-8a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M1 1l22 22"/></svg> บุคคล ••54 · TikTok · พฤ. 22 ต.ค. 69 · 08:20 น. · มีส่วนร่วม 3,400</p>
+        <button class="btn sm" type="button" aria-label="เปิดโพสต์ต้นทาง (ภาพนิ่ง)"><svg class="ic" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>เปิดโพสต์ต้นทาง</button>
+      </div>
+      <p class="quote">"<mark>เกลียด</mark>ร้านนี้ ชงอร่อยจนเงินไม่เหลือ 555"</p>
+      <p class="sub">สาขา: <b>ลาดพร้าว</b> (ระบุในโพสต์) · ประเด็น: <b>รสชาติ</b></p>
+    </section>
+    <section class="card" aria-labelledby="r-h">
+      <h2 id="r-h">ผลจากระบบ</h2>
+      <p class="sub">อ่านก่อนตัดสินใจแก้ · คำไฮไลต์คือคำที่ระบบใช้เป็นหลักฐาน</p>
+      <dl class="res-grid">
+        <div><dt>ความรู้สึก</dt><dd id="cur-sent"><span class="sent " data-sent="ลบ"><span class="dot" style="background:#D06A1E;"></span>ลบ</span></dd></div>
+        <div><dt>ความมั่นใจ</dt><dd id="cur-conf"><span class="conf"><span class="meter" aria-hidden="true"><span style="width:84%"></span></span><span class="num">84%</span></span></dd></div>
+        <div><dt>คำหลักฐาน</dt><dd><mark>เกลียด</mark></dd></div>
+        <div><dt>ความเร่งด่วน</dt><dd id="cur-urg"><span class="tag plain" data-sev="ต่ำ">ต่ำ</span></dd></div>
+      </dl>
+      <p class="explain">ระบบให้น้ำหนักกับคำว่า "เกลียด" แต่คำว่า "ชงอร่อยจน..." และ "555" ในประโยคเดียวกันไม่ได้ถูกใช้เป็นหลักฐาน</p>
+      <p class="sub" style="margin-top:10px">การเรียนรู้ของระบบ: <span id="learn-status">—</span></p>
+    </section>
+    <section class="card" aria-labelledby="s-h">
+      <h2 id="s-h">ข้อความที่ระบบอ่านผิดแบบเดียวกัน</h2>
+      <p class="sub">โพสต์ขบขันที่ระบบจัดเป็นลบ (กรณีที่ 2)</p>
+      <ul class="sim"><li data-sim="C31" data-plat="TikTok" data-orig="ลบ"><b>C31</b><span>"ร้านนี้<mark>ทำร้ายร่างกาย</mark>ฉัน ติดมัทฉะจนต้องแวะทุกเช้า <span class="emo">[อีโมจิร้องไห้]</span>"</span><span class="muted simres">TikTok · ระบบ <span class="sent " data-sent="ลบ"><span class="dot" style="background:#D06A1E;"></span>ลบ</span> 78%</span></li><li data-sim="C32" data-plat="X" data-orig="ลบ"><b>C32</b><span>"ชบาคือสาเหตุที่ฉัน<mark>จน</mark>นน <span class="emo">[อีโมจิยิ้มทั้งน้ำตา]</span> แก้วที่สามของวันแล้ว"</span><span class="muted simres">X · ระบบ <span class="sent " data-sent="ลบ"><span class="dot" style="background:#D06A1E;"></span>ลบ</span> 74%</span></li></ul>
+      <!-- F38 ใช้ผลเดียวกันกับ C31, C32 มีกล่องยืนยันและเลิกทำได้ -->
+      <div class="card-acts"><button class="btn" type="button" id="apply-sim" disabled aria-describedby="apply-sim-hint">ใช้ผลเดียวกันกับ 2 รายการนี้</button>
+        <span class="hint muted" id="apply-sim-hint" style="font-size:13px">บันทึกผลของ C09 ก่อน แล้วใช้ผลเดียวกันได้</span></div>
+      <div id="sim-msg" role="status" aria-live="polite"></div>
+      <p class="foot-note" style="margin-top:8px">เทียบ: C15 "อร่อยจนแสงออกปาก กลับมาก็ยังชอบ" ระบบอ่านสแลงถูกเป็นบวก</p>
+    </section>
+    <section class="card" aria-labelledby="h-h">
+      <h2 id="h-h">ประวัติ</h2>
+      <ul class="hist" id="history">
+        <li><time>พฤ. 22 ต.ค. 69 · 08:21 น.</time><span>ระบบจัดเป็น ลบ (84%) · ความเร่งด่วนต่ำ</span></li>
+        <li><time>จ. 26 ต.ค. 69 · 13:58 น.</time><span>มอบหมายให้แอดมินเพจ · สถานะ ใหม่</span></li>
+      </ul>
+    </section>
+  </div>
+  <form class="panel" id="edit" aria-labelledby="e-h" novalidate>
+    <h2 id="e-h">แก้ผลวิเคราะห์</h2>
+    <div class="edit-fields" id="edit-fields" style="display:flex;flex-direction:column;gap:12px">
+    <div class="diff" aria-live="polite" id="diff">
+      <span>ความรู้สึก: <span class="o">ลบ</span> → <b class="n">ลบ</b></span>
+      <span>ความเร่งด่วน: <span class="o">ต่ำ</span> → <b class="n">ต่ำ</b></span>
+    </div>
+    <fieldset><legend>1. ความรู้สึกที่ถูกต้อง</legend><div class="seg-opts"><label><input type="radio" name="sent" value="บวก"><span>บวก</span></label><label><input type="radio" name="sent" value="ผสม"><span>ผสม</span></label><label><input type="radio" name="sent" value="เป็นกลาง"><span>เป็นกลาง</span></label><label><input type="radio" name="sent" value="ลบ" checked><span>ลบ</span></label><label><input type="radio" name="sent" value="ไม่เกี่ยวข้อง"><span>ไม่เกี่ยวข้อง</span></label></div></fieldset>
+    <fieldset><legend>2. เหตุผลที่ระบบอ่านผิด <small>(เลือก 1 · จำเป็น)</small></legend><div class="seg-opts"><label><input type="radio" name="reason" value="ประชด"><span>ประชด</span></label><label><input type="radio" name="reason" value="ขบขัน"><span>ขบขัน</span></label><label><input type="radio" name="reason" value="ความเห็นผสม"><span>ความเห็นผสม</span></label><label><input type="radio" name="reason" value="อื่นๆ"><span>อื่นๆ</span></label></div></fieldset>
+    <fieldset><legend>3. ความเร่งด่วน <small>(แก้แยกจากความรู้สึกได้)</small></legend><div class="seg-opts"><label><input type="radio" name="urg" value="ต่ำ" checked><span>ต่ำ</span></label><label><input type="radio" name="urg" value="กลาง"><span>กลาง</span></label><label><input type="radio" name="urg" value="สูง"><span>สูง</span></label></div></fieldset>
+    <label class="check" style="align-items:flex-start"><input type="checkbox" id="learn" checked style="margin-top:3px"><span><b>ส่งให้ระบบเรียนรู้</b><br><span class="hint">ส่งเฉพาะข้อความและป้ายที่แก้ ไม่ส่งชื่อหรือรหัสผู้โพสต์</span></span></label>
+    <div id="save-msg" class="live" role="status" aria-live="polite"></div>
+    <div class="btnrow"><button class="btn primary" type="submit" id="save" disabled>บันทึก</button><button class="btn" type="button" id="cancel">ยกเลิก</button></div><!-- F42 แถวเดียว -->
+    <p class="hint" id="save-hint">เลือกเหตุผลก่อน ปุ่มบันทึกจึงกดได้ · ยกเลิก = คืนค่าเดิม</p>
+    </div>
+    <!-- F40 F41 หลังบันทึก: ซ่อนฟอร์ม แสดงสรุป + เลิกทำ -->
+    <div class="saved-sum" id="saved-sum" hidden tabindex="-1"></div>
+  </form>
+</div>
+<p class="demo-hint">สาธิตสำหรับผู้สังเกตการณ์: กด <span class="kbd">E</span> เพื่อให้การบันทึกครั้งถัดไปไม่สำเร็จ <span class="demo-flag" id="demo-flag" role="status"></span></p>
+<dialog id="sim-dlg" aria-labelledby="sim-dlg-h">
+  <form method="dialog">
+    <h2 id="sim-dlg-h">ใช้ผลเดียวกันกับ C31 และ C32?</h2>
+    <p class="sub" style="font-size:14px" id="sim-dlg-t"></p>
+    <p class="sub" style="font-size:14px;margin-top:6px">เลิกทำได้หลังยืนยัน</p>
+    <div class="dlg-actions"><button class="btn" value="cancel" type="submit">ยกเลิก</button><button class="btn primary" value="ok" type="submit">ใช้ผลกับ 2 รายการ</button></div>
+  </form>
+</dialog>
+</main>
+  </div>
+</div>
+</body>
+</html>

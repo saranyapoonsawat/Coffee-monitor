@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>m1 Push บนหน้าจอล็อก · Coffee Cafe Monitor (ต้นแบบ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<script src="app.js" defer></script>
+</head>
+<body class="k-mobile" data-page="m1">
+<a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a>
+
+<main id="main" class="stage">
+  <div class="phone" role="region" aria-label="หน้าจอมือถือ 390 × 844 จอล็อก">
+<div class="lock">
+  <p class="lk-date">ศ. 23 ต.ค. 69</p>
+  <p class="lk-time num">22:42</p>
+  <a class="push" id="push-full" href="m2.html" aria-label="เปิดการแจ้งเตือน Coffee Cafe Monitor: วิกฤต เคส K10 ความปลอดภัยอาหาร สาขารังสิต">
+    <span class="ph"><span class="logo" style="display:inline-flex;align-items:center;justify-content:center;color:var(--lime)"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Coffee Cafe Monitor<time>22:42 น.</time></span>
+    <b><span class="tag crit" data-sev="วิกฤต"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>วิกฤต</span> K10 ความปลอดภัยอาหาร · สาขารังสิต</b><!-- F01 ไอคอนเตือนในป้ายวิกฤต -->
+    <p>เชิงลบพุ่งนอกเวลาทำการ ลามไป 3 แพลตฟอร์มใน 60 นาที · เริ่มจาก Google Maps 21:40 น.</p>
+  </a>
+  <!-- F03 push แบบซ่อนรายละเอียด สลับได้จากแผงโหมดทดลองใช้งาน -->
+  <a class="push" id="push-private" href="m2.html" hidden aria-label="เปิดการแจ้งเตือน Coffee Cafe Monitor: มีเหตุระดับวิกฤต 1 เรื่อง">
+    <span class="ph"><span class="logo" style="display:inline-flex;align-items:center;justify-content:center;color:var(--lime)"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Coffee Cafe Monitor<time>22:42 น.</time></span>
+    <b><span class="tag crit" data-sev="วิกฤต"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>วิกฤต</span> มีเหตุระดับวิกฤต 1 เรื่อง · แตะเพื่อดู</b>
+  </a>
+  <p class="hint"><svg class="ic" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>แตะการแจ้งเตือนเพื่อเปิดเคส</p>
+</div></div>
+  <aside class="phone-note" aria-label="คำอธิบายหน้าจอ"><section class="demo" aria-labelledby="demo-h">
+  <h2 id="demo-h"><svg class="ic" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>โหมดทดลองใช้งาน <small>สำหรับผู้สังเกตการณ์ · ไม่ใช่ส่วนของแอป</small></h2>
+  <label class="sw-row"><input type="checkbox" role="switch" id="demo-fail"><span><b>จำลองส่งไม่สำเร็จ</b><small>การส่งครั้งถัดไปไม่สำเร็จ แล้วปิดสวิตช์เอง · ปุ่มลัด E</small></span></label>
+  <label class="sw-row"><input type="checkbox" role="switch" id="demo-hide"><span><b>ซ่อนรายละเอียดบนหน้าจอล็อก</b><small>push แสดงแค่ระดับและจำนวนเรื่อง (m1)</small></span></label>
+  <label class="sw-row sel">ขนาดจอ<select id="demo-size"><option value="390x844">390 × 844</option><option value="360x740">360 × 740</option></select></label>
+  <p class="demo-out" id="demo-out" role="status"></p>
+</section><p class="pn-k">กรณีที่ 1 · ขั้นใน User Flow (docx)</p><ol class="flow"><li class="on" aria-current="step"><span>1</span>เปิดแจ้งเตือน</li><li><span>2</span>ประเมิน</li><li><span>3</span>ตัดสินความเร่งด่วน</li><li><span>4</span>ตรวจสาขา</li><li><span>5</span>ตรวจผู้รับ</li><li><span>6</span>ทบทวน</li><li><span>7</span>ยืนยันส่ง</li><li><span>8</span>ติดตาม</li></ol><div class="pn-d"><p>Push ถึง CS เวรตามผังเวร ศ. 23 ต.ค. 69 · 22:42 น.</p><p>แตะการ์ดเพื่อเปิดหน้าสรุปเคสโดยตรง (ไม่ผ่านหน้าแรก)</p><p>สวิตช์ "ซ่อนรายละเอียดบนหน้าจอล็อก" ในแผงโหมดทดลองใช้งานแสดง push แบบไม่บอกประเด็นและสาขา</p></div></aside>
+</main>
+</body>
+</html>

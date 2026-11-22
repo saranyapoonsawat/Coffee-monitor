@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>m4 เลือกผู้รับ · Coffee Cafe Monitor (ต้นแบบ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<script src="app.js" defer></script>
+</head>
+<body class="k-mobile" data-page="m4">
+<a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a>
+
+<main id="main" class="stage">
+  <div class="phone" role="region" aria-label="หน้าจอมือถือ 390 × 844">
+    <div class="statusbar"><span>22:44</span><span class="sb-r">Coffee Cafe Monitor</span></div>
+    <header class="m-head"><a class="m-back" href="m2.html" aria-label="ย้อนกลับ"><svg class="ic" aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></a><h1>เลือกผู้รับ</h1><span class="m-back-sp"></span></header>
+    <div class="m-body" id="m-body">
+<div class="stepper" aria-label="ขั้นตอน"><span class="on" aria-current="step"><i>1</i>ผู้รับ</span><span><i>2</i>ตรวจทาน</span><span><i>3</i>ส่ง</span></div>
+<div class="notice info" id="undone" hidden role="status"></div>
+<div class="branchbox">
+  <fieldset><legend>ตรวจสาขา</legend>
+    <p class="sub" style="font-size:13px">ผู้โพสต์ต้นเรื่องระบุ: สาขารังสิต (C18) · ในโพสต์ X (C19): ระบบเดา มั่นใจ 72%</p>
+    <label class="radio"><input type="radio" name="br" value="confirm" checked>ยืนยันสาขารังสิต</label>
+    <label class="radio"><input type="radio" name="br" value="change">เปลี่ยนสาขา</label>
+    <div id="br-pick" hidden><label class="sr-only" for="br-sel">เลือกสาขา</label><select id="br-sel"><option>ลาดพร้าว</option><option selected>รังสิต</option><option>อารีย์</option><option>บางนา</option><option>พระราม 2</option></select></div>
+    <label class="radio"><input type="radio" name="br" value="unknown">ยังไม่ทราบสาขา</label>
+    <p class="notice warn" id="br-unknown" hidden style="font-size:13px">ส่งให้ทีมกลางหรือ QA เริ่มประเมินความเสี่ยงก่อน พร้อมป้าย "รอยืนยันสาขา"</p>
+  </fieldset>
+</div>
+<p class="sec-k">แนะนำตามกฎ: ความปลอดภัยอาหาร + วิกฤต</p>
+<div class="rcpt" id="rcpt"><label><input type="checkbox" name="rc" value="mgr" data-name="ผู้จัดการสาขารังสิต" data-role="หลัก" checked><span><b><span class="rc-name">ผู้จัดการสาขารังสิต</span><span class="tag pri">ผู้รับหลัก</span></b><small>ผู้รับหลัก · push + โทรอัตโนมัติ</small></span></label><label><input type="checkbox" name="rc" value="qa" data-name="QA เวรกลางคืน" data-role="" checked><span><b><span class="rc-name">QA เวรกลางคืน</span></b><small>ตามตารางเวร · push</small></span></label><label><input type="checkbox" name="rc" value="area" data-name="ผู้จัดการเขต" data-role="สำรอง" checked><span><b><span class="rc-name">ผู้จัดการเขต</span><span class="tag pri">ผู้รับสำรอง</span></b><small>ผู้รับสำรอง · ส่งเมื่อผู้รับหลักไม่รับทราบใน 5 นาที</small></span></label><div class="locked rc-locked" data-name="ผู้บริหาร" data-role="จำเป็น"><span class="lk"><svg class="ic" role="img" aria-label="บังคับตามกฎ" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span><b><span class="rc-name">ผู้บริหาร</span><span class="tag pri">บังคับตามกฎ</span></b><small>ใบงานกำหนดให้กรณีที่ 1 ยกระดับถึงผู้บริหาร · รายละเอียดกฎ [รอยืนยัน]</small></span></div><p class="sec-k">เพิ่มเติม</p><label><input type="checkbox" name="rc" value="pr" data-name="ฝ่ายสื่อสารองค์กร" data-role=""><span><b><span class="rc-name">ฝ่ายสื่อสารองค์กร</span></b><small>สำหรับร่างคำตอบต่อสาธารณะ</small></span></label></div>
+<div class="mcard" style="border-style:dashed;font-size:13px;color:var(--ink2)"><svg class="ic" role="img" aria-label="เวลา" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> ถ้าผู้รับหลักไม่รับทราบใน 5 นาที ส่งต่อผู้รับสำรอง (ผู้จัดการเขต) · ปรับได้ในตั้งค่า</div><!-- F11 --></div>
+    <div class="m-actions"><a class="btn primary main" href="m5.html" id="to-review">ถัดไป: ตรวจทาน (<span id="rc-count">4</span> คน)</a></div>
+    
+    
+  </div>
+  <aside class="phone-note" aria-label="คำอธิบายหน้าจอ"><section class="demo" aria-labelledby="demo-h">
+  <h2 id="demo-h"><svg class="ic" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>โหมดทดลองใช้งาน <small>สำหรับผู้สังเกตการณ์ · ไม่ใช่ส่วนของแอป</small></h2>
+  <label class="sw-row"><input type="checkbox" role="switch" id="demo-fail"><span><b>จำลองส่งไม่สำเร็จ</b><small>การส่งครั้งถัดไปไม่สำเร็จ แล้วปิดสวิตช์เอง · ปุ่มลัด E</small></span></label>
+  <label class="sw-row"><input type="checkbox" role="switch" id="demo-hide"><span><b>ซ่อนรายละเอียดบนหน้าจอล็อก</b><small>push แสดงแค่ระดับและจำนวนเรื่อง (m1)</small></span></label>
+  <label class="sw-row sel">ขนาดจอ<select id="demo-size"><option value="390x844">390 × 844</option><option value="360x740">360 × 740</option></select></label>
+  <p class="demo-out" id="demo-out" role="status"></p>
+</section><p class="pn-k">กรณีที่ 1 · ขั้นใน User Flow (docx)</p><ol class="flow"><li><span>1</span>เปิดแจ้งเตือน</li><li><span>2</span>ประเมิน</li><li><span>3</span>ตัดสินความเร่งด่วน</li><li class="on" aria-current="step"><span>4</span>ตรวจสาขา</li><li class="on" aria-current="step"><span>5</span>ตรวจผู้รับ</li><li><span>6</span>ทบทวน</li><li><span>7</span>ยืนยันส่ง</li><li><span>8</span>ติดตาม</li></ol><div class="pn-d"><p>ส่วนบน = ตรวจสาขา (ยืนยัน / เปลี่ยน / ยังไม่ทราบ) · ส่วนล่าง = ตรวจผู้รับ</p><p>ผู้บริหารแสดงเป็น "บังคับตามกฎ" ไม่ใช่ช่องติ๊ก เพราะกรณีที่ 1 ต้องยกระดับถึงผู้บริหาร</p><p>ผู้จัดการเขต = ผู้รับสำรอง ได้รับเมื่อผู้รับหลักไม่รับทราบใน 5 นาที (ทีมกำหนด รอบ 1)</p></div></aside>
+</main>
+</body>
+</html>

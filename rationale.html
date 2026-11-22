@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เหตุผลลำดับข้อมูล · Coffee Cafe Monitor (ต้นแบบ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<script src="app.js" defer></script>
+</head>
+<body class="k-doc" data-page="rationale">
+<a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a>
+<main id="main" class="wrap prose">
+<h1>เหตุผล: ลำดับข้อมูลมือถือต่างจากเว็บ <span class="draft">ร่าง</span></h1>
+<p class="sub">เว็บใช้ลำดับ <b>overview first, zoom and filter, then details-on-demand</b> (Shneiderman) เพราะเจ้าหน้าที่ตรวจหลายรายการในเวลางาน: ตัวกรอง → ตัวเลขหลัก → กราฟ → แยกแพลตฟอร์ม/สาขา → Social Feed → รายละเอียด
+ส่วนมือถือ (m2) ใช้ลำดับ <b>ตัดสินใจก่อน</b> เพราะผู้ใช้ถูกปลุกด้วย push นอกเวลาทำการ และต้องตัดสินใจเบื้องต้นได้ใน 10 วินาทีโดยไม่เลื่อนจอ (เกณฑ์ในใบงาน ตามที่ docx อ้าง)</p>
+<table>
+<caption class="sr-only">เทียบลำดับข้อมูลบนมือถือกับตำแหน่งบนเว็บ</caption>
+<thead><tr><th>ลำดับบนมือถือ</th><th>ข้อมูล</th><th>บนเว็บอยู่ที่</th><th>เหตุผล</th><th>หลักที่อ้าง</th></tr></thead>
+<tbody><tr><td>1</td><td><b>ความรุนแรง (ป้าย วิกฤต)</b></td><td>อยู่ในแถบเคสที่ยังไม่ปิด รองจากตัวกรองและตัวเลขหลัก</td><td>ผู้ใช้ต้องรู้ก่อนว่าต้องรีบหรือไม่ จึงอยู่บนสุด ใช้ข้อความ "วิกฤต" คู่สีแดงและไอคอนเตือน ไม่พึ่งสีอย่างเดียว · ชื่อระดับชุดเดียวทุกหน้า: วิกฤต · สูง · กลาง · ต่ำ ("วิกฤต" ใช้กับระดับเคส ส่วนโพสต์ใช้ความเร่งด่วนจาก xlsx)</td><td>ลำดับชั้นทางสายตา (docx) · WCAG 2.2 1.4.1 Use of Color · หลักฐานสัมภาษณ์ [รอใส่หลักฐานจากบันทึกสัมภาษณ์]</td></tr><tr><td>2</td><td><b>ประเด็น</b></td><td>ตัวกรอง "ประเด็น" และแท็บประเด็นร้องเรียน</td><td>ประเภทปัญหากำหนดผู้รับ (ความปลอดภัยอาหาร → ผู้จัดการสาขาและ QA ตามตารางระดับใน docx)</td><td>Nielsen ข้อ 2 match between system and real world (ใช้คำเดียวกับเกณฑ์ความรุนแรง)</td></tr><tr><td>3</td><td><b>สาขา + สถานะยืนยัน</b></td><td>ตัวกรองสาขา · กราฟเชิงลบแยกสาขา</td><td>ต้องรู้ว่าส่งถึงผู้จัดการสาขาไหน และสาขามาจากผู้โพสต์หรือระบบเดา</td><td>docx: "P3: ยืนยันสาขาและค้นหาผู้ติดต่อใช้เวลา" (ข้อค้นพบจากบันทึกสัมภาษณ์)</td></tr><tr><td>4</td><td><b>เวลา (โพสต์แรก · ผ่านไปกี่นาที · นอกเวลา)</b></td><td>แกนเวลาของกราฟ 7 วัน</td><td>บนมือถือแปลงเป็นเวลาที่ผ่านไป เพื่อไม่ต้องคำนวณเอง</td><td>Shneiderman: reduce short-term memory load</td></tr><tr><td>5</td><td><b>การลาม (แพลตฟอร์ม · เวลา · มีส่วนร่วม)</b></td><td>กราฟความรู้สึกแยกแพลตฟอร์ม</td><td>ผู้ให้สัมภาษณ์ระบุว่าต้องรู้ยอดการมีส่วนร่วมหรือการลามก่อนโทรแจ้งหัวหน้า</td><td>docx อ้าง P2 และ P3 ข้อ 9</td></tr><tr><td>6</td><td><b>ความเชื่อมั่น</b></td><td>คอลัมน์ความมั่นใจใน Social Feed (ป้าย รอตรวจสอบ < 75%)</td><td>ใบงานกำหนดให้ค่าจาก AI แสดงความเชื่อมั่นหรือหลักฐาน วางก่อนหลักฐานเพื่อบอกว่าควรเชื่อผลแค่ไหน</td><td>ข้อกำหนดใบงาน (docx) · Nielsen ข้อ 1 visibility of system status</td></tr><tr><td>7</td><td><b>หลักฐาน (ข้อความต้นเรื่อง + คำไฮไลต์)</b></td><td>หน้ารายละเอียดโพสต์ (w3)</td><td>บนมือถือแสดงแค่ข้อความต้นเรื่อง 1 ข้อความ ส่วนความเห็นทั้งหมดเปิดบนเว็บ</td><td>การเปิดเผยข้อมูลทีละขั้น (progressive disclosure) · Nielsen ข้อ 8</td></tr><tr><td>8</td><td><b>ปุ่ม 3 ทาง</b></td><td>ปุ่มกระจายตามหน้า</td><td>ปุ่มหลัก 1 ปุ่ม (56 px) อยู่ล่างสุดในระยะนิ้วโป้ง ปุ่มรอง 2 ปุ่ม (≥ 44 px) · "ไม่ใช่เรื่องด่วน" ต้องยืนยันและเลิกทำได้</td><td>กฎของ Hick (ทางเลือกน้อย) · กฎของ Fitts (เป้าใหญ่ ใกล้นิ้ว) · WCAG 2.2 2.5.8 Target Size (Minimum) · Nielsen ข้อ 5 · Shneiderman: permit easy reversal of actions</td></tr></tbody></table>
+<h2>สิ่งที่มือถือตัดออกจากจอแรก</h2>
+<ul><li>ตัวกรองหลายมิติ ตัวเลขหลัก 4 ตัว และกราฟ 7 วัน → ย้ายไป m3 (เปิดเมื่อต้องการ) ใช้ชิปสำเร็จรูปแทนตัวกรอง ตามกฎของ Hick (docx)</li>
+<li>การแก้ผลวิเคราะห์ → ทำบนเว็บเท่านั้น เพราะต้องอ่านบริบทและลดโอกาสแตะพลาด (docx)</li></ul>
+<h2>เกณฑ์การเข้าถึงที่ใช้ (WCAG 2.2)</h2>
+<ul><li>1.4.3 Contrast (Minimum): ตัวอักษร ≥ 4.5:1 · 1.4.11 Non-text Contrast: กราฟิกและขอบช่องกรอก ≥ 3:1 (ผลคำนวณอยู่ใน <a href="foundations.html">foundations</a>)</li>
+<li>2.5.8 Target Size (Minimum): ≥ 24×24 px · ต้นแบบใช้มือถือ ≥ 44 px และปุ่มหลัก 52–56 px</li>
+<li>1.4.1 Use of Color: สถานะทุกตัวมีข้อความกำกับ · 2.4.7 Focus Visible: วงโฟกัส 3 px สี primary · 2.4.11 Focus Not Obscured (Minimum): แถบปุ่มล่างไม่ทับส่วนที่โฟกัส (ต้องทดสอบเพิ่ม)</li></ul>
+<h2>ขั้นใน User Flow กรณีที่ 1 (docx) กับหน้าจอ</h2>
+<table><thead><tr><th>#</th><th>ขั้น</th><th>หน้าจอ</th></tr></thead><tbody><tr><td>1</td><td>เปิดแจ้งเตือน</td><td>m1, m2</td></tr><tr><td>2</td><td>ประเมิน</td><td>m3 (ข้อมูลตัดสินใจเบื้องต้นอยู่ใน m2)</td></tr><tr><td>3</td><td>ตัดสินความเร่งด่วน</td><td>m2</td></tr><tr><td>4</td><td>ตรวจสาขา</td><td>m4 (ส่วนบน)</td></tr><tr><td>5</td><td>ตรวจผู้รับ</td><td>m4</td></tr><tr><td>6</td><td>ทบทวน</td><td>m5</td></tr><tr><td>7</td><td>ยืนยันส่ง</td><td>m5</td></tr><tr><td>8</td><td>ติดตาม</td><td>m6</td></tr></tbody></table>
+<h2>สิ่งที่ยังต้องยืนยัน</h2>
+<ul><li>เวลาเป้าหมายรับทราบและคำตอบแรก 5/30/60 นาที: <span class="placeholder">[ตัวเลขจากการสัมภาษณ์]</span> (docx ระบุว่ายังไม่ใช่ SLA ที่องค์กรอนุมัติ)</li>
+<li>เวลาส่งต่อผู้รับสำรอง: 5 นาที (ทีมกำหนดหลังทดสอบรอบ 1 ยังไม่ใช่ SLA ที่องค์กรอนุมัติ) · ระยะเลิกทำหลังส่ง: <span class="placeholder">[ตัวเลขจากการสัมภาษณ์]</span></li>
+<li>รายละเอียดกฎการส่งถึงผู้บริหาร (ใครมีอำนาจยกระดับ ช่องทาง): <span class="placeholder">[รอยืนยัน]</span> · ผู้บริหารอยู่ในเส้นทางกรณีที่ 1 เสมอตามใบงาน</li>
+<li>หลักฐานว่าทำไมความรุนแรงต้องมาก่อนประเด็น: <span class="placeholder">[รอใส่หลักฐานจากบันทึกสัมภาษณ์]</span></li></ul>
+</main>
+</body>
+</html>
