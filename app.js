@@ -1,4 +1,4 @@
-/* Coffee Cafe Monitor ต้นแบบ — JavaScript ล้วน ไม่ใช้ไลบรารี */
+/* ชบา Monitor ต้นแบบ — JavaScript ล้วน ไม่ใช้ไลบรารี */
 (function () {
   'use strict';
   var page = document.body.dataset.page;

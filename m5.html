@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>m5 ตรวจทานก่อนส่ง · Coffee Cafe Monitor (ต้นแบบ)</title>
+<title>m5 ตรวจทานก่อนส่ง · ชบา Monitor (ต้นแบบ)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="tokens.css">
 <script src="app.js" defer></script>
 </head>
 <body class="k-mobile" data-page="m5">
 <a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
-<a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a>
+<nav aria-label="นำทางต้นแบบ"><a class="home-link" href="index.html"><svg class="ic" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>กลับหน้าเริ่ม</a></nav><!-- WCAG A1 ลิงก์อยู่ใน landmark -->
 
 <main id="main" class="stage">
   <div class="phone" role="region" aria-label="หน้าจอมือถือ 390 × 844">
-    <div class="statusbar"><span>22:45</span><span class="sb-r">Coffee Cafe Monitor</span></div>
+    <div class="statusbar"><span>22:45</span><span class="sb-r">ชบา Monitor</span></div>
     <header class="m-head"><a class="m-back" href="m4.html" aria-label="ย้อนกลับ"><svg class="ic" aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></a><h1>ตรวจทานก่อนส่ง</h1><span class="m-back-sp"></span></header>
     <div class="m-body" id="m-body">
 <div class="stepper" aria-label="ขั้นตอน"><span class="done"><i>1</i>ผู้รับ</span><span class="on" aria-current="step"><i>2</i>ตรวจทาน</span><span><i>3</i>ส่ง</span></div>
@@ -25,8 +25,8 @@
     <dt>ช่องทาง</dt><dd>push + โทรอัตโนมัติถึงผู้รับหลัก · ผู้รับสำรองได้ push เมื่อครบ 5 นาที</dd>
     <dt>ข้อความ</dt><dd class="msgbox">
       <span class="tag warn" style="margin-bottom:4px"><svg class="ic" aria-hidden="true" focusable="false" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>ยังไม่ยืนยันข้อเท็จจริง</span><!-- F15 -->
-      <p id="msg-text">ลูกค้าแจ้งเจอชิ้นใสแข็งในลาเต้ที่สาขารังสิต ลามไป X และ TikTok โปรดรับทราบและตรวจสอบที่สาขา</p>
-      <div id="msg-edit" hidden><label class="sr-only" for="msg-input">แก้ไขข้อความที่จะส่ง</label><textarea id="msg-input">ลูกค้าแจ้งเจอชิ้นใสแข็งในลาเต้ที่สาขารังสิต ลามไป X และ TikTok โปรดรับทราบและตรวจสอบที่สาขา</textarea>
+      <p id="msg-text">ลูกค้าแจ้งเจอชิ้นพลาสติกแข็งในลาเต้ที่สาขารังสิต พบโพสต์ใน X และ TikTok โปรดรับทราบและตรวจสอบที่สาขา</p>
+      <div id="msg-edit" hidden><label class="sr-only" for="msg-input">แก้ไขข้อความที่จะส่ง</label><textarea id="msg-input">ลูกค้าแจ้งเจอชิ้นพลาสติกแข็งในลาเต้ที่สาขารังสิต พบโพสต์ใน X และ TikTok โปรดรับทราบและตรวจสอบที่สาขา</textarea>
         <div class="msg-acts"><button class="btn primary" type="button" id="msg-save">ใช้ข้อความนี้</button><button class="btn" type="button" id="msg-cancel">ยกเลิก</button></div></div>
       <button class="btn ghost" type="button" id="msg-edit-btn" style="min-height:44px;padding:4px 0">แก้ไขข้อความ</button><!-- F14 -->
     </dd>
@@ -56,13 +56,13 @@
   </div>
 </dialog>
   </div>
-  <aside class="phone-note" aria-label="คำอธิบายหน้าจอ"><section class="demo" aria-labelledby="demo-h">
+  <aside class="phone-note" aria-label="คำอธิบายหน้าจอ"><aside class="demo" aria-label="โหมดทดลองใช้งาน"><!-- WCAG A1 แผงอยู่ใน landmark -->
   <h2 id="demo-h"><svg class="ic" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>โหมดทดลองใช้งาน <small>สำหรับผู้สังเกตการณ์ · ไม่ใช่ส่วนของแอป</small></h2>
   <label class="sw-row"><input type="checkbox" role="switch" id="demo-fail"><span><b>จำลองส่งไม่สำเร็จ</b><small>การส่งครั้งถัดไปไม่สำเร็จ แล้วปิดสวิตช์เอง · ปุ่มลัด E</small></span></label>
   <label class="sw-row"><input type="checkbox" role="switch" id="demo-hide"><span><b>ซ่อนรายละเอียดบนหน้าจอล็อก</b><small>push แสดงแค่ระดับและจำนวนเรื่อง (m1)</small></span></label>
   <label class="sw-row sel">ขนาดจอ<select id="demo-size"><option value="390x844">390 × 844</option><option value="360x740">360 × 740</option></select></label>
   <p class="demo-out" id="demo-out" role="status"></p>
-</section><p class="pn-k">กรณีที่ 1 · ขั้นใน User Flow (docx)</p><ol class="flow"><li><span>1</span>เปิดแจ้งเตือน</li><li><span>2</span>ประเมิน</li><li><span>3</span>ตัดสินความเร่งด่วน</li><li><span>4</span>ตรวจสาขา</li><li><span>5</span>ตรวจผู้รับ</li><li class="on" aria-current="step"><span>6</span>ทบทวน</li><li class="on" aria-current="step"><span>7</span>ยืนยันส่ง</li><li><span>8</span>ติดตาม</li></ol><div class="pn-d"><p>ทบทวนครบ: ความรุนแรง สาขา ผู้รับ ช่องทาง ข้อความ หลักฐาน</p><p>ยืนยันส่ง → กำลังส่ง… 1.2 วินาที → m6 · เปิดสวิตช์ "จำลองส่งไม่สำเร็จ" ในแผงโหมดทดลองใช้งาน = pop-up บอกสาเหตุ + ลองใหม่ + โทรหาผู้รับหลัก</p></div></aside>
+</aside><p class="pn-k">กรณีที่ 1 · ขั้นใน User Flow</p><ol class="flow"><li><span>1</span>เปิดแจ้งเตือน</li><li><span>2</span>ประเมิน</li><li><span>3</span>ตัดสินความเร่งด่วน</li><li><span>4</span>ตรวจสาขา</li><li><span>5</span>ตรวจผู้รับ</li><li class="on" aria-current="step"><span>6</span>ทบทวน</li><li class="on" aria-current="step"><span>7</span>ยืนยันส่ง</li><li><span>8</span>ติดตาม</li></ol><div class="pn-d"><p>ทบทวนครบ: ความรุนแรง สาขา ผู้รับ ช่องทาง ข้อความ หลักฐาน</p><p>ยืนยันส่ง → กำลังส่ง… 1.2 วินาที → m6 · เปิดสวิตช์ "จำลองส่งไม่สำเร็จ" ในแผงโหมดทดลองใช้งาน = pop-up บอกสาเหตุ + ลองใหม่ + โทรหาผู้รับหลัก</p></div></aside>
 </main>
 </body>
 </html>

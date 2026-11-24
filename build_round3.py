@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""สร้างต้นแบบ Coffee Cafe Monitor (prototype/) จากไฟล์ใน data/ — รันซ้ำได้
+"""สร้างต้นแบบ ชบา Monitor (prototype/) จากไฟล์ใน data/ — รันซ้ำได้
 
 ใช้เฉพาะไลบรารีมาตรฐานของ Python (อ่าน xlsx/docx ด้วย zipfile + XML)
     python3 build.py
@@ -13,9 +13,10 @@ import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+# WCAG สคริปต์นี้อยู่ใน prototype_round3/ · อ่าน data/ จากโฟลเดอร์แม่ และเขียนหน้าลงโฟลเดอร์นี้
+ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-OUT = ROOT / "prototype"
+OUT = Path(__file__).resolve().parent
 XLSX = DATA / "IS757_ข้อมูลจำลอง_ชบาคอฟฟี่_v2.xlsx"
 CSV = DATA / "IS757_ตัวเลขรายชั่วโมงสมมติ.csv"
 
@@ -353,6 +354,18 @@ def keywords(p):
     return [k.strip() for k in p["คำหลักฐานที่ระบบใช้"].split(",") if k.strip()]
 
 
+# ตามที่ผู้ออกแบบแก้ใน FigCraft (24 พ.ย. 69): ข้อความโพสต์ที่ยกมาในมือถือ m2/m3 ใช้คำ "พลาสติกแข็ง"
+# มีผลเฉพาะ m2 (หลักฐาน C18) และ m3 (C18, C19) · หน้าเว็บและไฟล์ data/ ยังเป็นข้อความเดิม
+MOBILE_QUOTE_EDIT = {"C18": ("ชิ้นใสแข็ง", "พลาสติกแข็ง"), "C19": ("ชิ้นแข็ง", "พลาสติกแข็ง")}
+
+
+def mobile_quote(p):
+    old, new = MOBILE_QUOTE_EDIT.get(p["ID"], ("", ""))
+    if not old:
+        return render_text(p["ข้อความ"], keywords(p))
+    return render_text(p["ข้อความ"].replace(old, new), [k.replace(old, new) for k in keywords(p)])
+
+
 def render_text(text, kws=(), mark=True):
     ranges = []
     if mark:
@@ -585,12 +598,13 @@ def svg_hourly(st=None):
 def svg_platform(st=None):
     """F28 ทุกส่วนของแท่งโฟกัสได้และมีตัวเลขเมื่อชี้/โฟกัส (data-tip) · F24 วาดรายสาขาได้"""
     st = st or ST_ALL
-    rowh, W, lw, bw = 30, 460, 96, 300
+    # WCAG B7 2.5.8 แท่งที่โฟกัสได้สูง 28 หน่วย (ไม่ต่ำกว่า 24px ที่ 1280 ขึ้นไป)
+    rowh, W, lw, bw, sh = 34, 460, 96, 300, 28
     H = rowh * len(st["plat"]) + 8
     parts = []
     for i, (p, c, tot) in enumerate(st["plat"]):
         y0 = 4 + i * rowh
-        parts.append(f'<text x="0" y="{y0 + 20}" class="lab">{esc(p)}</text>')
+        parts.append(f'<text x="0" y="{y0 + 22}" class="lab">{esc(p)}</text>')
         xx = lw
         for s in SENT_ORDER:
             v = c[s]
@@ -598,13 +612,13 @@ def svg_platform(st=None):
             fill = SENT_COLOR[s]
             stroke = f' stroke="{NEU_STROKE}" stroke-width="1"' if s == "เป็นกลาง" else ' stroke="#fff" stroke-width="1"'
             tip = f"{p} · {s} {fmt(v)} จาก {fmt(tot)} ({round(v / tot * 100)}%)"
-            parts.append(f'<rect class="seg-hit" tabindex="0" role="img" aria-label="{esc(tip)}" data-tip="{esc(tip)}" x="{xx:.1f}" y="{y0 + 4}" width="{max(w, 0.1):.1f}" height="24"{stroke} fill="{fill}"/>')
+            parts.append(f'<rect class="seg-hit" tabindex="0" role="img" aria-label="{esc(tip)}" data-tip="{esc(tip)}" x="{xx:.1f}" y="{y0 + 3}" width="{max(w, 0.1):.1f}" height="{sh}"{stroke} fill="{fill}"/>')
             if w >= 36:
                 lc = label_color(fill)
                 if lc:
-                    parts.append(f'<text x="{xx + w / 2:.1f}" y="{y0 + 21}" text-anchor="middle" class="seg" fill="{lc}" pointer-events="none">{round(v / tot * 100)}%</text>')
+                    parts.append(f'<text x="{xx + w / 2:.1f}" y="{y0 + 22}" text-anchor="middle" class="seg" fill="{lc}" pointer-events="none">{round(v / tot * 100)}%</text>')
             xx += w
-        parts.append(f'<text x="{W}" y="{y0 + 20}" text-anchor="end" class="lab num">{fmt(tot)}</text>')
+        parts.append(f'<text x="{W}" y="{y0 + 22}" text-anchor="end" class="lab num">{fmt(tot)}</text>')
     label = "กราฟแท่งซ้อน ความรู้สึกแยกตามแพลตฟอร์ม 19–25 ต.ค. 69 กดแท็บเพื่ออ่านตัวเลขทีละส่วน หรือใช้ปุ่มดูตารางข้อมูล"
     return (f'<svg class="chart" role="group" aria-label="{esc(label)}" viewBox="0 0 {W} {H}">' + "".join(parts) + "</svg>")
 
@@ -699,14 +713,14 @@ def page(title, body, pid, kind):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(title)} · Coffee Cafe Monitor (ต้นแบบ)</title>
+<title>{esc(title)} · ชบา Monitor (ต้นแบบ)</title>
 {FONTS}
 <link rel="stylesheet" href="tokens.css">
 <script src="app.js" defer></script>
 </head>
 <body class="k-{kind}" data-page="{pid}">
 <a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
-<a class="home-link" href="index.html">{icon('left', size=14)}กลับหน้าเริ่ม</a>
+<nav aria-label="นำทางต้นแบบ"><a class="home-link" href="index.html">{icon('left', size=14)}กลับหน้าเริ่ม</a></nav><!-- WCAG A1 ลิงก์อยู่ใน landmark -->
 {body}
 </body>
 </html>
@@ -722,7 +736,7 @@ def web_shell(pid, crumbs, content, active):
     nav = []
     for key, label, ic, href in NAV:
         if key == "settings":
-            nav.append('<li class="sep" role="presentation"></li>')
+            nav.append('<li class="sep" aria-hidden="true"></li>')
         cur = ' aria-current="page"' if key == active else ""
         badge = f'<span class="count" aria-label="เคสระดับ{SEV_CRIT}ที่ยังไม่มีผู้รับทราบ">K10</span>' if key == "cases" else ""  # F04
         if href:
@@ -739,7 +753,7 @@ def web_shell(pid, crumbs, content, active):
     return f"""
 <div class="web">
   <aside class="side">
-    <div class="brand"><span class="logo">{icon('pulse', size=20)}</span><span><b>Coffee Cafe Monitor</b><small>Social Listening & Insights</small></span></div>
+    <div class="brand"><span class="logo">{icon('pulse', size=20)}</span><span><b>ชบา Monitor</b><small>Social Listening & Insights</small></span></div>
     <nav aria-label="เมนูหลัก"><ul>{''.join(nav)}</ul></nav>
   </aside>
   <div class="web-main">
@@ -762,13 +776,13 @@ def web_shell(pid, crumbs, content, active):
 
 def demo_panel():
     """F16 แผง "โหมดทดลองใช้งาน" นอกกรอบโทรศัพท์ (แทน "สาธิต: กด E" บนจอ) · F03 สวิตช์ซ่อนรายละเอียดบนหน้าจอล็อก"""
-    return f"""<section class="demo" aria-labelledby="demo-h">
+    return f"""<aside class="demo" aria-label="โหมดทดลองใช้งาน"><!-- WCAG A1 แผงอยู่ใน landmark -->
   <h2 id="demo-h">{icon('sliders', size=16)}โหมดทดลองใช้งาน <small>สำหรับผู้สังเกตการณ์ · ไม่ใช่ส่วนของแอป</small></h2>
   <label class="sw-row"><input type="checkbox" role="switch" id="demo-fail"><span><b>จำลองส่งไม่สำเร็จ</b><small>การส่งครั้งถัดไปไม่สำเร็จ แล้วปิดสวิตช์เอง · ปุ่มลัด E</small></span></label>
   <label class="sw-row"><input type="checkbox" role="switch" id="demo-hide"><span><b>ซ่อนรายละเอียดบนหน้าจอล็อก</b><small>push แสดงแค่ระดับและจำนวนเรื่อง (m1)</small></span></label>
   <label class="sw-row sel">ขนาดจอ<select id="demo-size"><option value="390x844">390 × 844</option><option value="360x740">360 × 740</option></select></label>
   <p class="demo-out" id="demo-out" role="status"></p>
-</section>"""
+</aside>"""
 
 
 def phone_shell(pid, clock, content, note, header=None, actions="", tabbar="", noscroll=False, extra=""):
@@ -780,7 +794,7 @@ def phone_shell(pid, clock, content, note, header=None, actions="", tabbar="", n
     return f"""
 <main id="main" class="stage">
   <div class="phone" role="region" aria-label="หน้าจอมือถือ 390 × 844">
-    <div class="statusbar"><span>{clock}</span><span class="sb-r">Coffee Cafe Monitor</span></div>
+    <div class="statusbar"><span>{clock}</span><span class="sb-r">ชบา Monitor</span></div>
     {head}
     <div class="m-body{' no-scroll' if noscroll else ''}" id="m-body">{content}</div>
     {f'<div class="m-actions">{actions}</div>' if actions else ''}
@@ -812,7 +826,7 @@ def step_note(here, desc):
     for i, s in enumerate(STEPS, 1):
         on = s in here
         lis.append(f'<li{" class=\"on\" aria-current=\"step\"" if on else ""}><span>{i}</span>{s}</li>')
-    return (f'<p class="pn-k">กรณีที่ 1 · ขั้นใน User Flow (docx)</p><ol class="flow">{"".join(lis)}</ol>'
+    return (f'<p class="pn-k">กรณีที่ 1 · ขั้นใน User Flow</p><ol class="flow">{"".join(lis)}</ol>'
             f'<div class="pn-d">{desc}</div>')
 
 
@@ -911,10 +925,14 @@ a.nav-item:hover{background:var(--bg)}
 .field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink2)}
 .field select,.field input[type=text]{min-height:40px;border:1px solid var(--control);border-radius:10px;background:#fff;padding:6px 10px;font-size:14px;color:var(--ink);min-width:150px}
 .check{display:inline-flex;align-items:center;gap:8px;min-height:40px;font-size:14px;color:var(--ink)}
-.check input{width:20px;height:20px;accent-color:var(--primary)}
+.check input{width:24px;height:24px;accent-color:var(--primary);flex:none}
 .saved{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--ink2)}
 .chip{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 12px;border:1px solid var(--control);border-radius:999px;background:#fff;font-size:14px;cursor:pointer}
-.chip[aria-pressed=true]{background:var(--primaryTint);border-color:var(--primary);color:var(--primary);font-weight:600}
+/* WCAG A3 2.5.8 เป้าหมายอย่างน้อย 24×24 */
+input[type=checkbox],input[type=radio]{min-width:24px;min-height:24px}
+.solo-link,.crumbs a{display:inline-flex;align-items:center;min-height:24px}
+/* WCAG B6 ชิปตัวกรองที่ใช้อยู่ (span) ใช้คลาส .on แทน aria-pressed */
+.chip.on,.chip[aria-pressed=true]{background:var(--primaryTint);border-color:var(--primary);color:var(--primary);font-weight:600}
 /* F25 F26 แถบเคสอยู่บนสุดและเด่นที่สุดในหน้า */
 .alertbar{display:flex;align-items:flex-start;gap:16px;background:var(--critTint);border:1px solid #F4C7C1;border-left:6px solid var(--crit);border-radius:14px;padding:16px 20px;color:var(--crit)}
 .alertbar>b{white-space:nowrap;font-size:17px}
@@ -1108,7 +1126,7 @@ dialog h2{font-size:18px;margin-bottom:6px}
 dialog fieldset{border:0;padding:0;margin:12px 0;display:flex;flex-direction:column;gap:4px}
 dialog legend{font-weight:600;font-size:14px;margin-bottom:4px}
 .radio{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px}
-.radio input{width:22px;height:22px;accent-color:var(--primary)}
+.radio input{width:24px;height:24px;accent-color:var(--primary);flex:none}
 .dlg-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .dlg-actions .btn{min-height:48px}
 .toast{position:absolute;left:12px;right:12px;bottom:12px;background:var(--ink);color:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:14px;z-index:5}
@@ -1148,7 +1166,7 @@ dialog legend{font-weight:600;font-size:14px;margin-bottom:4px}
 .demo h2{font-size:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .demo h2 small{font-weight:400;color:var(--ink2);font-size:12px}
 .sw-row{display:flex;gap:10px;align-items:flex-start;font-size:14px;min-height:32px;cursor:pointer}
-.sw-row input{width:20px;height:20px;accent-color:var(--primary);margin-top:2px;flex:none}
+.sw-row input{width:24px;height:24px;accent-color:var(--primary);margin-top:2px;flex:none}
 .sw-row small{display:block;font-size:12px;color:var(--ink2);line-height:1.45}
 .sw-row.sel{align-items:center;justify-content:space-between}
 .sw-row select{min-height:32px;border:1px solid var(--control);border-radius:8px;background:#fff;padding:2px 6px}
@@ -1252,7 +1270,7 @@ def filter_bar(compact=False):
     <button class="chip" type="button" aria-pressed="false">{icon('star', size=14)}รีวิวเดลิเวอรี (Grab, LINE MAN)</button>
     <span class="muted" id="saved-msg" role="status"></span>
   </div>
-  <p class="foot-note" style="margin-top:8px" id="flt-note">ตัวกรองสาขาเปลี่ยนตัวเลขและกราฟจริง · เป็นภาพนิ่ง</p>
+  <p class="foot-note" style="margin-top:8px" id="flt-note">ตัวกรองสาขาเปลี่ยนตัวเลขและกราฟจริงจาก CSV · ตัวกรองอื่นยังเป็นภาพนิ่ง</p>
 </section>"""
 
 
@@ -1301,8 +1319,8 @@ def build_w1():
 <!-- F25 แถบเคสที่ยังไม่ปิดอยู่เหนือตัวกรอง · F04 ใช้ชื่อระดับชุดเดียว -->
 <section class="alertbar" aria-labelledby="open-cases-h">{icon('alert', label='คำเตือน', size=24)}<b id="open-cases-h">เคสที่ยังไม่ปิด 2 เคส</b>
   <ul>
-    <li>{sev_tag(case_level('K10'), True)} <a href="w2.html?case=K10">K10</a> ความปลอดภัยอาหาร · สาขารังสิต · {k10n} โพสต์ · เรื่อง C18 · ผู้โพสต์ต้นเรื่องถามความคืบหน้า (C28 {esc(thai_dt(POSTS['C28']['วันเวลา']))})</li>
-    <li>{sev_tag(case_level('K14'))} <a href="w2.html?case=K14">K14</a> การชำระเงิน · สาขาลาดพร้าว · {k14n} โพสต์ · ความเสี่ยงเปิดเผยข้อมูลส่วนบุคคล (C29)</li>
+    <li>{sev_tag(case_level('K10'), True)} <a href="w2.html?case=K10">K10</a> ความปลอดภัยอาหาร · สาขารังสิต · {k10n} โพสต์ · ต้นเรื่อง C18 · ผู้โพสต์ต้นเรื่องถามความคืบหน้า (C28 {esc(thai_dt(POSTS['C28']['วันเวลา']))})</li>
+    <li>{sev_tag(case_level('K14'))} <a href="w2.html?case=K14">K14</a> การชำระเงิน · สาขาลาดพร้าว · {k14n} โพสต์ · เสี่ยงเปิดเผยข้อมูลส่วนบุคคล (C29)</li>
   </ul>
   <a class="more" href="w-cases.html">ดูทั้งหมดใน {NAV_LABEL['cases']} {icon('right', size=16)}</a>
 </section>
@@ -1322,7 +1340,7 @@ def build_w1():
 </section>
 <div class="grid2">
   <section class="card" aria-labelledby="h-plat">
-    <h2 id="h-plat">แบบสำรวจตามแพลตฟอร์ม</h2>
+    <h2 id="h-plat">ความรู้สึกแยกตามแพลตฟอร์ม</h2>
     <p class="sub">สัดส่วนต่อแพลตฟอร์ม · ตัวเลขขวา = จำนวนการกล่าวถึง · ชี้หรือกดแท็บที่แท่งเพื่อดูตัวเลข</p>
     <div class="legend">{''.join(f'<span><i style="background:{SENT_COLOR[s]};{"box-shadow:inset 0 0 0 1px " + NEU_STROKE if s == "เป็นกลาง" else ""}"></i>{s}</span>' for s in SENT_ORDER)}</div>
     <p class="foot-note">ผสม = มีทั้งชมและติ</p><!-- F28 -->
@@ -1331,7 +1349,7 @@ def build_w1():
     <div id="slot-plattbl" hidden>{platform_table()}</div>
   </section>
   <section class="card" aria-labelledby="h-br">
-    <h2 id="h-br">ผลกระทบเชิงลบแยกตามสาขา</h2>
+    <h2 id="h-br">เชิงลบแยกตามสาขา</h2>
     <p class="sub">ตัวเลขหนา = เชิงลบ · ตัวเลขจาง = ทั้งหมดของสาขา</p>
     <div class="legend"><span><i style="background:{T['neg']}"></i>เชิงลบ</span><span><i style="background:{T['band']}"></i>ทั้งหมด</span></div>
     {svg_branch()}
@@ -1357,7 +1375,7 @@ def build_w1():
     </ul>
   </section>
 </div>
-<p class="foot-note">ตัวเลขทั้งหมดคำนวณจาก IS757_ตัวเลขรายชั่วโมงสมมติ.csv ช่วง 19–25 ต.ค. 69 (ไม่รวมยอด 26 ต.ค.) · <a href="data.html">ที่มาของตัวเลข</a> · ชบา คอฟฟี่ เป็นแบรนด์สมมติ</p>
+<p class="foot-note">ตัวเลขทั้งหมดคำนวณจาก IS757_ตัวเลขรายชั่วโมงสมมติ.csv ช่วง 19–25 ต.ค. 69 (ไม่รวมยอด 26 ต.ค.) · <a class="solo-link" href="data.html">ที่มาของตัวเลข</a> · ชบา คอฟฟี่ เป็นแบรนด์สมมติ</p>
 <div hidden id="branch-tpls">{tpls}</div>
 <div class="tip" id="tip" hidden></div>
 """
@@ -1387,7 +1405,7 @@ def post_row(p):
         br_html += f'<span class="meta" style="color:var(--warn)">{esc(br_note)} · รอยืนยัน</span>'
     # data-case / data-branch ใช้กับ ?case= และ ?branch= จาก Dashboard
     return f"""<tr data-id="{pid}" data-review="{'1' if needs_review(p) else '0'}" data-case="{esc(p['เคส (เสนอ)'])}" data-branch="{esc(br)}">
-<td><input type="checkbox" class="rowsel" aria-label="เลือก {pid}" style="width:20px;height:20px;accent-color:var(--primary)"></td>
+<td><input type="checkbox" class="rowsel" aria-label="เลือก {pid}" style="width:24px;height:24px;accent-color:var(--primary)"></td>
 <td class="idcell">{idcell}<span class="meta">{esc(thai_dt(p['วันเวลา']))}</span></td>
 <td class="platcell">{esc(p['แพลตฟอร์ม'])}<span class="meta">{esc(engagement(p))}</span><span class="meta">{icon('eyeoff', label='ชื่อผู้โพสต์ถูกปกปิด', size=13)} {esc(p['ผู้โพสต์ (ปกปิด)'])}</span></td>
 <td class="msg">{msg}{('<span class="kwchips">' + ''.join(extra) + '</span>') if extra else ''}</td>
@@ -1422,7 +1440,7 @@ def build_w2():
     <label class="check"><input type="checkbox" id="only-low"> เฉพาะความมั่นใจต่ำกว่า 75%</label>
   </div>
   <div class="saved">{icon('filter', size=16)}<span>ตัวกรองที่ใช้อยู่</span>
-    <div class="fchips" id="fchips"><span class="chip" aria-pressed="true">19–25 ต.ค. 69</span></div><!-- F31 ช่วงวันตรงกับ w1 -->
+    <div class="fchips" id="fchips"><span class="chip on">19–25 ต.ค. 69</span></div><!-- F31 ช่วงวันตรงกับ w1 -->
     <span class="muted">(ตัวกรองแบบเลื่อนลงเป็นภาพนิ่ง)</span></div>
 </section>
 <p class="legend-line">{icon('eyeoff', size=16)}<span>ชื่อผู้โพสต์ถูกปกปิด แสดงเฉพาะประเภทบัญชีและเลขท้าย 2 หลัก</span><span><mark>คำไฮไลต์</mark> = คำหลักฐานที่ระบบใช้ตัดสิน</span><span>ความมั่นใจต่ำกว่า 75% ขึ้นป้าย <span class="tag warn">รอตรวจสอบ</span></span></p>
@@ -1632,7 +1650,7 @@ def build_w_states():
     sel = lambda lab, val, dis="": f'<label class="field">{lab}<select{dis}><option>{val}</option></select></label>'
     rows = [
         ("ตัวกรอง", [
-            state_cell(sel("สาขา", f"ทั้งหมด ({len(BRANCHES5)} สาขา)") + '<span class="chip" aria-pressed="true">' + CAMPAIGN + ' · 20–26 ต.ค. 69</span>',
+            state_cell(sel("สาขา", f"ทั้งหมด ({len(BRANCHES5)} สาขา)") + '<span class="chip on">' + CAMPAIGN + ' · 20–26 ต.ค. 69</span>',
                        "โหลดตัวเลือกครบ", "ค่าที่เลือกอยู่และชุดตัวกรองที่บันทึกไว้", "เปลี่ยนค่า บันทึกชุดตัวกรอง"),
             state_cell(sel("สาขา", "กำลังโหลดตัวเลือก…", " disabled aria-busy=\"true\"") + '<div class="skel" style="width:70%"></div>',
                        "เปิดหน้า หรือเปลี่ยนช่วงเวลา", "ช่องที่ยังเลือกไม่ได้ พร้อมคำว่า กำลังโหลด", "ใช้ตัวกรองอื่นที่โหลดแล้วได้"),
@@ -1676,18 +1694,19 @@ def build_w_states():
 # ---------------- mobile
 def build_m1():
     first = f"{C18['แพลตฟอร์ม']} {post_time(C18)}"
-    ph = f'<span class="ph"><span class="logo" style="display:inline-flex;align-items:center;justify-content:center;color:var(--lime)">{icon("pulse", size=14)}</span>Coffee Cafe Monitor<time>{PUSH_TIME} น.</time></span>'
+    ph = f'<span class="ph"><span class="logo" style="display:inline-flex;align-items:center;justify-content:center;color:var(--lime)">{icon("pulse", size=14)}</span>ชบา Monitor<time>{PUSH_TIME} น.</time></span>'
     content = f"""
 <div class="lock">
+  <h1 class="sr-only">การแจ้งเตือนบนหน้าจอล็อก</h1><!-- WCAG หน้าต้องมี h1 -->
   <p class="lk-date">{esc(DAY_TH[FRI])}</p>
   <p class="lk-time num">{PUSH_TIME}</p>
-  <a class="push" id="push-full" href="m2.html" aria-label="เปิดการแจ้งเตือน Coffee Cafe Monitor: {SEV_CRIT} เคส K10 ความปลอดภัยอาหาร สาขารังสิต">
+  <a class="push" id="push-full" href="m2.html"><!-- WCAG 2.5.3 ใช้ข้อความที่มองเห็นเป็นชื่อ -->
     {ph}
     <b>{sev_tag(SEV_CRIT, True)} K10 ความปลอดภัยอาหาร · สาขารังสิต</b><!-- F01 ไอคอนเตือนในป้ายวิกฤต -->
-    <p>เชิงลบพุ่งนอกเวลาทำการ ลามไป {len(SPREAD)} แพลตฟอร์มใน {SPREAD_MIN} นาที · เริ่มจาก {esc(first)}</p>
+    <p>เชิงลบพุ่งนอกเวลาทำการ พบโพสต์ใน {len(SPREAD)} แพลตฟอร์มใน {SPREAD_MIN} นาที · เริ่มจาก {esc(first)}</p>
   </a>
   <!-- F03 push แบบซ่อนรายละเอียด สลับได้จากแผงโหมดทดลองใช้งาน -->
-  <a class="push" id="push-private" href="m2.html" hidden aria-label="เปิดการแจ้งเตือน Coffee Cafe Monitor: มีเหตุระดับ{SEV_CRIT} 1 เรื่อง">
+  <a class="push" id="push-private" href="m2.html" hidden>
     {ph}
     <b>{sev_tag(SEV_CRIT, True)} มีเหตุระดับ{SEV_CRIT} 1 เรื่อง · แตะเพื่อดู</b>
   </a>
@@ -1707,13 +1726,13 @@ def m2_core():
     spread = "".join(f'<div><b>{esc(p["แพลตฟอร์ม"])}</b>{esc(post_time(p))}<br><span class="muted">{esc(engagement(p))}</span></div>' for p in SPREAD)
     return f"""
 <div class="sev">{sev_tag(SEV_CRIT, True)}<span class="sr-only">ระดับเคส</span><p class="issue">{esc(C18['ประเด็น'])}</p></div><!-- F04 ไม่ใช้ "ความรุนแรงสูง" ซ้อนกับ "วิกฤต" · รวมแถวเพื่อให้ m2 ไม่ต้องเลื่อน -->
-<h2 class="m-title">ลูกค้าแจ้งเจอพลาสติกใสในลาเต้</h2>
+<h2 class="m-title">ลูกค้าแจ้งเจอชิ้นพลาสติกแข็งในลาเต้</h2>
 <div class="mcard">
   <div class="kv"><b>สาขา{esc(C18['สาขา'])}</b><span class="tag ok">{icon('check', size=14)}ยืนยันจากรีวิวสาขา (C18)</span></div>
   <p class="sub" style="font-size:14px;margin-top:4px">{icon('clock', label='เวลา', size=16)} โพสต์แรก {esc(post_time(C18))} · {M2_ELAPSED} นาทีที่แล้ว · นอกเวลาทำการ</p>
 </div>
 <div class="mcard">
-  <p style="font-size:14px"><b>ลามไป {len(SPREAD)} แพลตฟอร์มใน {SPREAD_MIN} นาที</b> · ยังไม่พบเพจข่าว</p>
+  <p style="font-size:14px"><b>พบโพสต์ใน {len(SPREAD)} แพลตฟอร์มใน {SPREAD_MIN} นาที</b> · ยังไม่พบเพจข่าว</p>
   <div class="spread">{spread}</div>
 </div>
 <!-- F07 บอกว่าระบบประเมินอะไร และมั่นใจเท่าไร -->
@@ -1722,7 +1741,7 @@ def m2_core():
 <!-- F05 กรอบรูปหลักฐานจำลอง (ไม่ใช้รูปคนจริง) + ปุ่มเปิดโพสต์ต้นทาง -->
 <div class="mcard ev" id="ev">
   <div class="ev-img" role="img" aria-label="กรอบรูปหลักฐานจำลอง: รูปจากโพสต์ต้นทาง">รูปจากโพสต์ต้นทาง</div>
-  <p>"{render_text(C18['ข้อความ'], keywords(C18))}"</p>
+  <p>"{mobile_quote(C18)}"</p>
   <div class="ev-src"><small class="muted" style="display:flex;align-items:center;gap:4px">{icon('eyeoff', label='ชื่อผู้โพสต์ถูกปกปิด', size=14)}{esc(C18['ผู้โพสต์ (ปกปิด)'])} · {esc(C18['แพลตฟอร์ม'])}</small>
     <button class="btn ghost" type="button" id="open-src">{icon('external', size=16)}เปิดโพสต์ต้นทาง</button></div>
 </div>
@@ -1754,12 +1773,12 @@ def build_m2():
     note = step_note(["เปิดแจ้งเตือน", "ตัดสินความเร่งด่วน"],
                      "<p>ตัดสินใจได้ใน 10 วินาที ไม่ต้องเลื่อน (ตรวจที่ 390×844 และ 360×740 · ถ้าล้น ย่อรูปหลักฐานก่อน) ลำดับ: ความรุนแรง → ประเด็น → สาขา → เวลา → การลาม → ความเชื่อมั่น → หลักฐาน</p>"
                      "<p>ปุ่ม: ยกระดับ (ไป m4) · ดูภาพรวม (ไป m3 = ขั้นประเมิน) · ไม่ใช่เรื่องด่วน (กล่องยืนยัน + เลิกทำ) · รับเรื่องนี้</p>"
-                     '<p><a href="m-states.html">ดู 4 สถานะของตัวควบคุมนี้</a></p>')
+                     '<p><a class="solo-link" href="m-states.html">ดู 4 สถานะของตัวควบคุมนี้</a></p>')
     return page("m2 แจ้งเตือนเคส K10", phone_shell("m2", PUSH_TIME, m2_core(), note, header=(None, "เคส K10"), actions=actions, noscroll=True, extra=dialog), "m2", "mobile")
 
 
 def build_m3():
-    posts = "".join(f'<div class="mcard"><p class="muted" style="font-size:13px">{p["ID"]} · {esc(p["แพลตฟอร์ม"])} · {esc(post_time(p))} · {esc(engagement(p))}</p><p>"{render_text(p["ข้อความ"], keywords(p))}"</p></div>' for p in SPREAD)
+    posts = "".join(f'<div class="mcard"><p class="muted" style="font-size:13px">{p["ID"]} · {esc(p["แพลตฟอร์ม"])} · {esc(post_time(p))} · {esc(engagement(p))}</p><p>"{mobile_quote(p)}"</p></div>' for p in SPREAD)
     content = f"""
 <section class="mcard" aria-labelledby="m3h">
   <h2 id="m3h" style="font-size:15px">การกล่าวถึงรายชั่วโมง ตั้งแต่ 18:00 น. <span class="muted" style="font-weight:400">ทั้งหมด / ลบ</span></h2>
@@ -1780,7 +1799,7 @@ RECIPIENTS = [
     ("mgr", "ผู้จัดการสาขารังสิต", "ผู้รับหลัก · push + โทรอัตโนมัติ", True, "หลัก", False),
     ("qa", "QA เวรกลางคืน", "ตามตารางเวร · push", True, "", False),
     ("area", "ผู้จัดการเขต", f"ผู้รับสำรอง · ส่งเมื่อผู้รับหลักไม่รับทราบใน {ESCALATE_MIN} นาที", True, "สำรอง", False),  # F10
-    ("exec", "ผู้บริหาร", f"ใบงานกำหนดให้กรณีที่ 1 ยกระดับถึงผู้บริหาร · รายละเอียดกฎ {PH_CONFIRM}", True, "จำเป็น", True),
+    ("exec", "ผู้บริหาร", "", True, "จำเป็น", True),  # ตาม FigCraft: ตัดคำอธิบายใต้ชื่อผู้บริหารออก
     ("pr", "ฝ่ายสื่อสารองค์กร", "สำหรับร่างคำตอบต่อสาธารณะ", False, "", False),
 ]
 
@@ -1794,7 +1813,7 @@ def build_m4():
         if locked:
             # F09 ผู้บริหาร: ไอคอนกุญแจ + "บังคับตามกฎ" แทนช่องติ๊กสีเทา (ใบงานกำหนด ห้ามตัดออก)
             rc.append(f'<div class="locked rc-locked" data-name="{esc(name)}" data-role="{esc(badge)}"><span class="lk">{icon("lock", label="บังคับตามกฎ", size=22)}</span>'
-                      f'<span><b><span class="rc-name">{esc(name)}</span><span class="tag pri">บังคับตามกฎ</span></b><small>{esc(desc)}</small></span></div>')
+                      f'<span><b><span class="rc-name">{esc(name)}</span><span class="tag pri">บังคับตามกฎ</span></b>{f"<small>{esc(desc)}</small>" if desc else ""}</span></div>')
             continue
         tag = f'<span class="tag pri">{"ผู้รับ" + badge}</span>' if badge else ""  # F10 ป้าย ผู้รับหลัก / ผู้รับสำรอง
         attrs = " checked" if checked else ""
@@ -1827,7 +1846,7 @@ def default_rcpt_list():
     return "".join(f"<li>{esc(n)}{RCPT_LABEL.get(b, '')}</li>" for _, n, _, c, b, _ in RECIPIENTS if c)
 
 
-K10_MSG = "ลูกค้าแจ้งเจอพลาสติกใสในลาเต้ที่สาขารังสิต ลามไป X และ TikTok โปรดรับทราบและตรวจสอบที่สาขา"
+K10_MSG = "ลูกค้าแจ้งเจอชิ้นพลาสติกแข็งในลาเต้ที่สาขารังสิต พบโพสต์ใน X และ TikTok โปรดรับทราบและตรวจสอบที่สาขา"
 
 
 def build_m5():
@@ -1899,18 +1918,18 @@ def build_m6():
 <div class="notice warn" style="flex-direction:column;gap:2px"><b>คำตอบแรกต่อสาธารณะ: ยังไม่มี</b>
   <p class="elapsed" role="timer">ผ่านมา <b class="num">{FIRST_RESP_ELAPSED}</b> นาที นับจากโพสต์แรก {esc(post_time(C18))}</p><!-- F18 -->
   <span style="font-size:14px">เป้าหมายภายใน <span class="placeholder">{PH_INTERVIEW}</span> นาที</span></div>"""
-    actions = '<div class="pair"><button class="btn" type="button" aria-label="ถอนหรือเปลี่ยนผู้รับ (ภาพนิ่ง)">ถอน/เปลี่ยนผู้รับ</button><a class="btn primary" href="m2.html">กลับไปที่เคส</a></div>'
+    actions = '<div class="pair"><button class="btn" type="button" aria-label="ถอน/เปลี่ยนผู้รับ (ภาพนิ่ง)">ถอน/เปลี่ยนผู้รับ</button><a class="btn primary" href="m2.html">กลับไปที่เคส</a></div>'
     note = step_note(["ติดตาม"], f"<p>ส่งสำเร็จ ≠ รับทราบ ≠ ปิดเคส · แสดงสถานะแยกรายคน · ผู้รับสำรองยังไม่ได้รับจนครบ {ESCALATE_MIN} นาที</p><p>แถบเลิกทำนับถอยหลัง 5 วินาที (เวลาสาธิต; ค่าจริงรอผลสัมภาษณ์) · เลิกทำแล้วกลับ m4</p>")
     return page("m6 ส่งสำเร็จ", phone_shell("m6", SENT_TIME, content, note, header=(None, "ยกระดับเคส K10"), actions=actions, tabbar=tabbar(NAV_LABEL["cases"])), "m6", "mobile")
 
 
 def build_m_states():
-    head = f'<p style="display:flex;gap:6px;align-items:center">{sev_tag(SEV_CRIT, True)}<b>K10 · สาขารังสิต</b></p><p><b>ลูกค้าแจ้งพลาสติกใสในลาเต้</b></p>'  # F04
+    head = f'<p style="display:flex;gap:6px;align-items:center">{sev_tag(SEV_CRIT, True)}<b>K10 · สาขารังสิต</b></p><p><b>ลูกค้าแจ้งเจอชิ้นพลาสติกแข็งในลาเต้</b></p>'  # F04
     sending = "".join(f'<li style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span>{n}</span><span class="{c}">{s}</span></li>'
                       for n, s, c in [("ผจก.สาขารังสิต", "ส่งถึงแล้ว", "pass"), ("QA เวรกลางคืน", "กำลังส่ง…", ""), ("ผู้จัดการเขต", f"สำรอง · รอ {ESCALATE_MIN} นาที", "muted"), ("ผู้บริหาร", "รอคิว", "muted")])
     cells = [
         ("ปกติ", T["ok"], head + '<p class="sub" style="font-size:13px">ยังไม่มีผู้รับเรื่อง · ยังไม่ตอบกลับสาธารณะ</p><a class="btn primary" href="m4.html" style="min-height:52px">ยกระดับและแจ้งทีม</a><div class="pair" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><a class="btn" href="m3.html" style="min-height:44px">ดูภาพรวม</a><span class="btn ghost" style="min-height:44px">ไม่ใช่เรื่องด่วน</span></div>',
-         "เคสใหม่ที่ยังไม่มีผู้รับ", "ปุ่มหลัก 1 ปุ่ม + ปุ่มรอง 2 ปุ่ม อยู่ในระยะนิ้วโป้ง", "ยกระดับ ดูภาพรวม หรือบอกว่าไม่ด่วน"),
+         "เคสใหม่ที่ยังไม่มีผู้รับ", "ปุ่มหลัก 1 ปุ่ม + ปุ่มรอง 2 ปุ่ม อยู่ในระยะนิ้วโป้ง", "ส่งแจ้งเตือนในทีม ดูภาพรวม หรือบอกว่าไม่ด่วน"),
         ("กำลังโหลด", T["primary"], head + f'<ul style="list-style:none;margin:0;padding:0">{sending}</ul><button class="btn primary" type="button" disabled aria-busy="true" style="min-height:52px">กำลังส่ง…</button><p class="sub" style="font-size:12px">ปิดแอปได้ ระบบส่งต่อให้จนครบ</p>',
          "กดยืนยันส่งแล้ว ระบบกำลังส่งถึงผู้รับ", "สถานะรายคน และปุ่มหลักถูกล็อกกันกดซ้ำ", f"รอ หรือปิดแอป · ส่งครบแล้วไปหน้าส่งสำเร็จ (m6) ที่เลิกทำได้ภายใน {PH_INTERVIEW} วินาที"),
         ("ว่าง", T["ink3"], f'<div style="text-align:center">{icon("check", label="ไม่มีเคสค้าง", size=28)}<p><b>ไม่มีเคสที่รอคุณรับทราบ</b></p><p class="sub" style="font-size:13px">ระบบยังเฝ้าดู {S["n_platforms"]} แพลตฟอร์มอยู่</p></div><a class="btn" href="m3.html" style="min-height:44px">ดูภาพรวม</a>',
@@ -1937,7 +1956,7 @@ def build_index():
              ("rationale.html", "เหตุผลลำดับข้อมูลมือถือ vs เว็บ"), ("foundations.html", "พื้นฐานการออกแบบ"), ("data.html", "ที่มาของตัวเลข")]
     body = f"""<main id="main" class="wrap">
 <div style="display:flex;gap:14px;align-items:center"><span class="logo" style="width:52px;height:52px;border-radius:14px">{icon('pulse', size=26)}</span>
-<div><h1>ทดลองใช้งาน Coffee Cafe Monitor</h1><p class="sub">IS757 · แบรนด์สมมติ ชบา คอฟฟี่ ({len(BRANCHES5)} สาขา: {' '.join(BRANCHES5)}) · ข้อมูลทั้งหมดเป็นข้อมูลจำลอง</p></div></div>
+<div><h1>ทดลองใช้งาน ชบา Monitor</h1><p class="sub">IS757 · แบรนด์สมมติ ชบา คอฟฟี่ ({len(BRANCHES5)} สาขา: {' '.join(BRANCHES5)}) · ข้อมูลทั้งหมดเป็นข้อมูลจำลอง</p></div></div>
 <div class="cases">
   <a class="case" href="m1.html"><span><span class="tag pri">กรณีที่ 1</span> <span class="muted">มือถือ</span></span>
     <h2>ได้รับแจ้งเตือนนอกเวลา แล้วตัดสินใจว่าจะทำอะไรต่อ</h2>
@@ -2075,7 +2094,7 @@ def build_data():
 
 
 # ---------------------------------------------------------------- app.js
-APP_JS = r"""/* Coffee Cafe Monitor ต้นแบบ — JavaScript ล้วน ไม่ใช้ไลบรารี */
+APP_JS = r"""/* ชบา Monitor ต้นแบบ — JavaScript ล้วน ไม่ใช้ไลบรารี */
 (function () {
   'use strict';
   var page = document.body.dataset.page;
@@ -2691,7 +2710,7 @@ def main():
         "review_ids": REVIEW_IDS, "empty_combo": EMPTY_COMBO,
         "contrast": contrast_rows(), "files": sorted(list(files) + ["tokens.css", "app.js"]),
     }
-    (ROOT / "build-summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
+    (OUT / "build-summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"สร้าง {len(files)} หน้า + tokens.css + app.js ใน {OUT}")
     print(f"ทั้งหมด {fmt(S['total'])} · เชิงลบ {fmt(S['neg'])} · สูงสุด {S['peak_th']} = {S['peak']}")
     print("รอตรวจสอบ (<75%):", ", ".join(REVIEW_IDS), f"({len(REVIEW_IDS)} โพสต์)")
